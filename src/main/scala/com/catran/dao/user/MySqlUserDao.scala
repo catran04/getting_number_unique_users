@@ -5,6 +5,8 @@ import com.catran.database.my_sql.MySqlTrainee
 import com.catran.options.ApplicationOptions
 import org.apache.log4j.Logger
 
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
 import scala.util.{Failure, Success, Try}
 
 /**
@@ -18,14 +20,28 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
   MySqlTrainee(connection, appOptions)
 
 
+  override def getAllUniqueUsers: mutable.HashSet[String] = {
+    try {
+      val rs = statement.executeQuery(s"SELECT * FROM ${appOptions.userTableName};")
+      var users: ArrayBuffer[String] = ArrayBuffer[String]()
+      while (rs.next()) {
+        users += rs.getString(1)
+      }
+      users
+    } catch {
+      case e: Exception => throw new DaoException(e)
+    }
+  }
+
   override def isExist(userId: String): Boolean = {
+    try {
     val rs = statement.executeQuery(s"SELECT EXIST" +
       s"(SELECT * FROM ${appOptions.userTableName}" +
       s" WHERE id = ${userId}" +
       s" LIMIT 1;)")
-    Try(rs.getBoolean(1)) match {
-      case Success(value) => value
-      case Failure(e) => throw new DaoException(e)
+    rs.getBoolean(1)
+    } catch {
+      case e: Exception => throw new DaoExeption(e)
     }
   }
 
