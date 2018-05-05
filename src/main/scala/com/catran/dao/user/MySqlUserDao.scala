@@ -80,5 +80,8 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
     }
   }
 
-
+  override def close: Unit = {
+    connection.close()
+    logger.info("Connection to MySql is closed")
+  }
 }

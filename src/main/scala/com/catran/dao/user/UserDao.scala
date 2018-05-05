@@ -12,6 +12,7 @@ trait UserDao {
   def getUniqueNumber: Long
   def getAllUniqueUsers: mutable.HashSet[String]
   def reset: Unit
+  def close: Unit
 
 
 }
