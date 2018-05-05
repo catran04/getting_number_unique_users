@@ -21,7 +21,8 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
 
   override def getAllUniqueUsers: mutable.HashSet[String] = {
     try {
-      val rs = statement.executeQuery(s"SELECT * FROM ${appOptions.userTableName};")
+      val query = s"SELECT * FROM ${appOptions.userTableName};"
+      val rs = statement.executeQuery(query)
       var users: mutable.HashSet[String] = mutable.HashSet[String]()
       while (rs.next()) {
         users += rs.getString(1)
@@ -34,10 +35,11 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
 
   override def isExist(userId: String): Boolean = {
     try {
-    val rs = statement.executeQuery(s"SELECT EXIST" +
-      s"(SELECT * FROM ${appOptions.userTableName}" +
-      s" WHERE id = ${userId}" +
-      s" LIMIT 1;)")
+      val query = s"SELECT EXIST" +
+        s"(SELECT * FROM ${appOptions.userTableName}" +
+        s" WHERE id = ${userId}" +
+        s" LIMIT 1;)"
+    val rs = statement.executeQuery(query)
     rs.getBoolean(1)
     } catch {
       case e: Exception => throw new DaoException(e)
@@ -46,18 +48,26 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
 
   override def getUniqueNumber: Long = {
     try {
-      val rs = statement.executeQuery(s"SELECT COUNT(*) FROM ${appOptions.userTableName};")
-     rs.getLong(1)
+      val query = s"SELECT COUNT(*) FROM ${appOptions.userTableName};"
+      val rs = statement.executeQuery(query)
+      if(rs.next()) {
+        rs.getLong(1)
+      } else
+        throw new DaoException("The getting of unique number of Users was failure")
     } catch {
+      case e: DaoException => throw new DaoException(e)
       case e: Exception => throw new DaoException(e)
     }
   }
 
   override def addUser(userId: String): Unit = {
     try {
-      val ps = connection.prepareStatement(s"INSERT INTO ${appOptions.userTableName} (id) VALUES (?);")
+      val query = s"INSERT INTO ${appOptions.userTableName} (id) VALUES (?);"
+      val ps = connection.prepareStatement(query)
       ps.setString(1, userId)
+      if(!ps.execute()) throw new DaoException(s"The adding user: '${userId}' was failure")
     } catch {
+      case e: DaoException => throw new DaoException(e)
       case e: Exception => throw new DaoException(e)
     }
   }
