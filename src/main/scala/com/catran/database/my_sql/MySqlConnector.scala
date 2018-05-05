@@ -21,7 +21,7 @@ object MySqlConnector extends SQLConnector {
 
     val host = options.host
     val port = options.port
-    val databaseName = options.userDatabaseName
+    val databaseName = options.databaseName
     val autoReconnect = options.autoReconnect
     val useSSL = options.useSSL
     val useJDBCCompliantTimezoneShift = options.useJDBCCompliantTimezoneShift
