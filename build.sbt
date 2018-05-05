@@ -20,3 +20,11 @@ libraryDependencies += "joda-time" % "joda-time" % "2.9.9"
 // https://mvnrepository.com/artifact/log4j/log4j
 libraryDependencies += "log4j" % "log4j" % "1.2.17"
 
+// https://mvnrepository.com/artifact/org.json4s/json4s-native
+libraryDependencies += "org.json4s" %% "json4s-native" % "3.5.2"
+
+// https://mvnrepository.com/artifact/org.json4s/json4s-core
+libraryDependencies += "org.json4s" %% "json4s-core" % "3.5.2"
+
+// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+libraryDependencies += "mysql" % "mysql-connector-java" % "6.0.6"
