@@ -6,7 +6,6 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server
 import akka.http.scaladsl.server.{Directives, StandardRoute}
 import com.catran.handler.UserHandler
-import com.catran.model.{Response, User}
 import com.catran.options.ApplicationContext
 
 /**
@@ -36,7 +35,7 @@ class RestRoute(appContext: ApplicationContext) extends Directives {
               case None => processSuccess(response.number_unique_users.get.toString)
               case Some(err_msg) => processFailure(err_msg, response.response_code)
             }
-          }
+          } ~
           delete {
             val response = userHandler.reset
             response.error_message match {
