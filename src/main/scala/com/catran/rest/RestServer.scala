@@ -3,6 +3,9 @@ package com.catran.rest
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
+import com.catran.dao.user.MySqlUserDao
+import com.catran.database.my_sql.MySqlConnector
+import com.catran.options.{ApplicationContext, ApplicationOptions}
 import org.apache.log4j.Logger
 import org.joda.time.DateTimeZone
 
@@ -10,7 +13,7 @@ import org.joda.time.DateTimeZone
 /**
   * the start point of application.
   */
-class ScalaRestBind (applicationContext: ApplicationContext){
+class RestServer(applicationContext: ApplicationContext) {
 
   private val logger: Logger = Logger.getLogger(getClass)
 
@@ -35,27 +38,27 @@ class ScalaRestBind (applicationContext: ApplicationContext){
     val host = options.rest.host
     val port = options.rest.port
 
-    Http().bindAndHandle(route.route, host, port)
+    Http().bindAndHandle(route.getRoute, host, port)
     logger.info(s"REST server is now listening on http://$host:$port/...")
   }
 }
 
-object ScalaRestBind {
+object RestServer {
 
   def main(args: Array[String]): Unit = {
+    val applicationContext = initializeContext(args)
+    val app = new RestServer(applicationContext)
+    app.launch()
+  }
+
+  private def initializeContext(args: Array[String]): ApplicationContext = {
     println(s"Parsing input arguments: '${args.mkString(" ")}'")
     val applicationOptions = ApplicationOptions(args)
     println(s"options ${applicationOptions}")
-    val storage = DBUtil(applicationOptions)
-    println(s"storage ${storage}")
-    storage.addTimeData(10000)
 
-    val applicationContext = ApplicationContext(
+    ApplicationContext(
       options = applicationOptions,
-      storage = storage
+      userDao = new MySqlUserDao(applicationOptions, MySqlConnector)
     )
-
-    val app = new ScalaRestBind(applicationContext)
-    app.launch()
   }
 }

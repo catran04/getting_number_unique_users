@@ -2,12 +2,11 @@ package com.catran.dao.user
 
 import com.catran.database.SQLConnector
 import com.catran.database.my_sql.MySqlTrainee
+import com.catran.exception.DaoException
 import com.catran.options.ApplicationOptions
 import org.apache.log4j.Logger
 
 import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
-import scala.util.{Failure, Success, Try}
 
 /**
   * Created by Administrator on 5/5/2018.
@@ -23,7 +22,7 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
   override def getAllUniqueUsers: mutable.HashSet[String] = {
     try {
       val rs = statement.executeQuery(s"SELECT * FROM ${appOptions.userTableName};")
-      var users: ArrayBuffer[String] = ArrayBuffer[String]()
+      var users: mutable.HashSet[String] = mutable.HashSet[String]()
       while (rs.next()) {
         users += rs.getString(1)
       }
@@ -41,7 +40,7 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
       s" LIMIT 1;)")
     rs.getBoolean(1)
     } catch {
-      case e: Exception => throw new DaoExeption(e)
+      case e: Exception => throw new DaoException(e)
     }
   }
 
