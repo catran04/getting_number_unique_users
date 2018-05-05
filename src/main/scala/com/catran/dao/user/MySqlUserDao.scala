@@ -9,16 +9,18 @@ import org.apache.log4j.Logger
 import scala.collection.mutable
 
 /**
-  * Created by Administrator on 5/5/2018.
+  * serves as a layer between the UserHandler and the mySql database
   */
 class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) extends UserDao{
 
   private val connection = connector.getConnection(appOptions)
   private val statement = connection.createStatement()
   private val logger = Logger.getLogger(getClass)
-  MySqlTrainee(connection, appOptions)
+  MySqlTrainee(connection, appOptions) //prepare database and creates table for the using
 
-
+  /**
+    * requests to mysql server and return all unique userIds
+    */
   override def getAllUniqueUsers: mutable.HashSet[String] = {
     try {
       val query = s"SELECT * FROM ${appOptions.userTableName};"
@@ -33,6 +35,10 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
     }
   }
 
+  /**
+    * checks of existing an user in a storage
+    * serves for an integration tests
+    */
   override def isExist(userId: String): Boolean = {
     try {
       val query = s"SELECT EXIST" +
@@ -46,6 +52,9 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
     }
   }
 
+  /**
+    * requests to a storage and returns the number of unique users
+    */
   override def getUniqueNumber: Long = {
     try {
       val query = s"SELECT COUNT(*) FROM ${appOptions.userTableName};"
@@ -60,6 +69,9 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
     }
   }
 
+  /**
+    * added new user into a storage
+    */
   override def addUser(userId: String): Unit = {
     try {
       val query = s"INSERT INTO ${appOptions.userTableName} (id) VALUES (?);"
@@ -72,6 +84,9 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
     }
   }
 
+  /**
+    * deletes all rows from a table
+    */
   override def reset: Unit = {
     try{
       statement.execute(s"DELETE FROM ${appOptions.userTableName};")
@@ -80,6 +95,9 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
     }
   }
 
+  /**
+    * closes the connection to a MySql server
+    */
   override def close: Unit = {
     connection.close()
     logger.info("Connection to MySql is closed")

@@ -8,6 +8,4 @@ import com.catran.dao.user.UserDao
 case class ApplicationContext(
                                options: ApplicationOptions,
                                userDao: UserDao
-                             ) {
-
-}
+                             )

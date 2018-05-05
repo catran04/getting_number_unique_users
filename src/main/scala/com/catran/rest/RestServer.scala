@@ -26,19 +26,14 @@ class RestServer(applicationContext: ApplicationContext) {
     * creates the connection to database and launch REST server
     */
   def launch(): Unit = {
-
     DateTimeZone.setDefault(DateTimeZone.UTC)
-
     val options = applicationContext.options
-
-    logger.debug(s"Options applied: '${options}'")
 
     implicit val system: ActorSystem = ActorSystem("system")
     implicit val materializer = ActorMaterializer()
     implicit val executionContext = system.dispatcher
 
     val route = RestRoute(applicationContext)
-
     val host = options.rest.host
     val port = options.rest.port
 
@@ -47,14 +42,13 @@ class RestServer(applicationContext: ApplicationContext) {
 
     StdIn.readLine() // let it run until user presses return
 
-    applicationContext.userDao.close
+    applicationContext.userDao.close //close the connection to database
 
     serverBinding
       .flatMap(_.unbind()) // trigger unbinding from the port
       .onComplete(_ => system.terminate()) // and shutdown when do
 
     logger.info("REST server was shutdown")
-
   }
 }
 

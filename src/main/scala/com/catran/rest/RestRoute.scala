@@ -15,7 +15,9 @@ class RestRoute(appContext: ApplicationContext) extends Directives {
 
   private val userHandler = new UserHandler(appContext.userDao)
 
-
+  /**
+    * the routing of the user requests
+    */
   def getRoute: server.Route = {
       path("user") {
         post {
@@ -46,14 +48,24 @@ class RestRoute(appContext: ApplicationContext) extends Directives {
         }
   }
 
-  private def processSuccess(responseAsJson: String): StandardRoute = {
-    complete(StatusCodes.OK, responseAsJson)
+  /**
+    * handles success response
+    * @param response - the answer for request from the user
+    */
+  private def processSuccess(response: String): StandardRoute = {
+    complete(StatusCodes.OK, response)
   }
 
-  private def processFailure(responseAsJson: String, responseCode: Int): StandardRoute = {
+  /**
+    * handles response with some error
+    * @param errorMessage - defines the message about error
+    * @param responseCode - http code
+    */
+  private def processFailure(errorMessage: String, responseCode: Int): StandardRoute = {
     responseCode match {
-      case StatusCodes.NotFound.intValue => complete(StatusCodes.NotFound.intValue, responseAsJson)
-      case _ => complete(StatusCodes.InternalServerError.intValue, responseAsJson)
+      case StatusCodes.BadRequest.intValue => complete(StatusCodes.BadRequest.intValue, errorMessage)
+      case StatusCodes.NotFound.intValue => complete(StatusCodes.NotFound.intValue, errorMessage)
+      case _ => complete(StatusCodes.InternalServerError.intValue, errorMessage)
     }
   }
 }

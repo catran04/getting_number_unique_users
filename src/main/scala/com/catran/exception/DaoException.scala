@@ -1,7 +1,7 @@
 package com.catran.exception
 
 /**
-  * Created by Administrator on 5/5/2018.
+  * creates for handling of the bad results of accessing to a storage
   */
 class DaoException(message: String) extends Exception(message){
 

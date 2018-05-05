@@ -21,6 +21,9 @@ class MySqlTrainee(cn: Connection, options: ApplicationOptions) {
     logger.info(s"database ${options.mysql.databaseName} is using")
   }
 
+  /**
+    * creates the table for a working application
+    */
   def createTable: Unit = {
     statement.execute(s"CREATE TABLE IF NOT EXISTS ${options.userTableName}(" +
       "id VARCHAR(128) PRIMARY KEY);")
@@ -30,6 +33,11 @@ class MySqlTrainee(cn: Connection, options: ApplicationOptions) {
 
 object MySqlTrainee {
 
+  /**
+    * change database and creates table into it
+    * @param cn connection to MySql server
+    * @param options
+    */
   def apply(cn: Connection, options: ApplicationOptions): Unit = {
     val trainee = new MySqlTrainee(cn, options)
     trainee.useDB

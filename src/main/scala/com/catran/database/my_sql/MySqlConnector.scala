@@ -32,7 +32,7 @@ object MySqlConnector extends SQLConnector {
     val url = s"jdbc:mysql://${host}:${port}/${databaseName}" +
       s"?autoReconnect=${autoReconnect}&useSSL=${useSSL}&useJDBCCompliantTimezoneShift=${useJDBCCompliantTimezoneShift}" +
       s"&useLegacyDatetimeCode=${useLegacyDatetimeCode}&serverTimezone=${serverTimezone}"
-    println(s"url ${url}")
+    logger.info(s"url ${url}")
 
     val username = options.username
     val password = options.password

@@ -5,7 +5,7 @@ import org.json4s.native.Serialization.write
 import org.json4s.{NoTypeHints, native}
 
 /**
-  * Created by Administrator on 5/5/2018.
+  * defines the response to user
   */
 case class Response(
                    response_code: Int = StatusCodes.OK.intValue,

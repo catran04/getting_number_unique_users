@@ -5,7 +5,7 @@ import java.sql.Connection
 import com.catran.options.ApplicationOptions
 
 /**
-  * defines the connection to the MySQL server
+  * defines the connection to the SQL server
   */
 trait SQLConnector {
 

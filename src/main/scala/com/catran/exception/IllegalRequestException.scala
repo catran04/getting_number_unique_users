@@ -1,7 +1,7 @@
 package com.catran.exception
 
 /**
-  * Created by Administrator on 5/5/2018.
+  * creates for handling of the results of a parsing body of request
   */
 class IllegalRequestException(message: String) extends Exception(message){
 
