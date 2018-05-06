@@ -1,29 +1,16 @@
-package com.catran.database.my_sql
+package com.catran.database.sq_lite
 
 import java.sql.Connection
 
 import com.catran.options.ApplicationOptions
 import org.apache.log4j.Logger
 
-/**
-  * Created by Administrator on 5/5/2018.
-  */
-class MySqlTrainee(cn: Connection, options: ApplicationOptions) {
+class SQLiteTrainee(cn: Connection, options: ApplicationOptions) {
 
   private val logger = Logger.getLogger(getClass)
   private val statement = cn.createStatement()
 
-  def createDB: Unit = {
-    statement.execute(s"CREATE DATABASE ${options.mysql.databaseName};")
-  }
 
-  /**
-    * the method for using concrete database.
-    */
-  def useDB: Unit = {
-    statement.execute(s"USE ${options.mysql.databaseName};")
-    logger.info(s"database ${options.mysql.databaseName} is using")
-  }
 
   /**
     * creates the table for a working application
@@ -35,7 +22,7 @@ class MySqlTrainee(cn: Connection, options: ApplicationOptions) {
   }
 }
 
-object MySqlTrainee {
+object SQLiteTrainee {
 
   /**
     * change database and creates table into it
@@ -43,9 +30,7 @@ object MySqlTrainee {
     * @param options
     */
   def apply(cn: Connection, options: ApplicationOptions): Unit = {
-    val trainee = new MySqlTrainee(cn, options)
-    trainee.createDB
-    trainee.useDB
+    val trainee = new SQLiteTrainee(cn, options)
     trainee.createTable
   }
 }

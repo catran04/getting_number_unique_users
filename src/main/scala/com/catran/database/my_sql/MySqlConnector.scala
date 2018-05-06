@@ -12,10 +12,11 @@ object MySqlConnector extends SQLConnector {
 
   /**
     * creates the connection to a MySQL server
-    * @param appOpt: ApplicationOptions - the options for a handling of connection
+    *
+    * @param appOpt : ApplicationOptions - the options for a handling of connection
     * @return Connection - the connection to the MySQL server
     */
-  override def getConnection(appOpt: ApplicationOptions): Connection = {
+  override def getConnection(appOpt: ApplicationOptions, testConnection: Boolean = false): Connection = {
     val options = appOpt.mysql
     val driver = options.driver
 

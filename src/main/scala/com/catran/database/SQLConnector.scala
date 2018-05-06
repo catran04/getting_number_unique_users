@@ -9,5 +9,5 @@ import com.catran.options.ApplicationOptions
   */
 trait SQLConnector {
 
-  def getConnection(options: ApplicationOptions): Connection
+  def getConnection(options: ApplicationOptions, testConnection: Boolean = false): Connection
 }
