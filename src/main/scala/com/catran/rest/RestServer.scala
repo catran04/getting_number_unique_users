@@ -4,8 +4,6 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import akka.stream.ActorMaterializer
-import com.catran.dao.user.MySqlUserDao
-import com.catran.database.my_sql.MySqlConnector
 import com.catran.options.{ApplicationContext, ApplicationOptions}
 import org.apache.log4j.Logger
 import org.joda.time.DateTimeZone
@@ -68,7 +66,7 @@ object RestServer {
 
     ApplicationContext(
       options = applicationOptions,
-      userDao = new MySqlUserDao(applicationOptions, MySqlConnector)
+      userDao = ApplicationContext.getInFileMemoryUserDao//new MySqlUserDao(applicationOptions, MySqlConnector)
     )
   }
 }

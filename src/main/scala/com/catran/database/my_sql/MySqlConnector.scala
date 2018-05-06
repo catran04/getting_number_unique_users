@@ -39,7 +39,7 @@ object MySqlConnector extends SQLConnector {
 
     Class.forName(driver)
     val connection = DriverManager.getConnection(url, username, password)
-    logger.info(s"connection to database ${databaseName} was success")
+    logger.info(s"connection to database ${databaseName} was successed")
     connection
   }
 }

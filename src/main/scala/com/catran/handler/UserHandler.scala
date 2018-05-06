@@ -14,9 +14,11 @@ import scala.util.{Failure, Success, Try}
   */
 class UserHandler(userDao: UserDao) {
   private val logger = Logger.getLogger(getClass)
-  private val INTERNAL_ERROR_MESSAGE = "Wow you found a vulnerability in my code. And this means that I failed" +
-    " the test task. It's very sad. I wanted to work for you"
   private var localStorage = userDao.getAllUniqueUsers
+  private val INTERNAL_ERROR_MESSAGE = "Wow you found a vulnerability in my code. And this means that I failed" +
+  " the test task. It's very sad. I wanted to work for you"
+  val NON_FIRST_VISIT_MESSAGE = ", how many times do you want to come here?"
+  val FIRST_VISIT_MESSAGE = s", hello. Nice to meet you."
 
   /**
     * updates the counter of unique users to 0
@@ -66,13 +68,13 @@ class UserHandler(userDao: UserDao) {
 
       if (numberUniqueUsers == localStorage.size) {
         logger.info(s"the user: ${userId} already was requested")
-        Response(message = Some(s"${userId}, how many times do you want to come here?"))
+        Response(message = Some(userId + NON_FIRST_VISIT_MESSAGE))
       } else {
         logger.info(s"adding a new user: ${userId} to a storage")
         Try(userDao.addUser(userId)) match {
           case Success(_) =>
             logger.info("the user was added into a storage")
-            Response(message = Some(s"Hello ${userId}. Nice to meet you."))
+            Response(message = Some(userId + FIRST_VISIT_MESSAGE))
           case Failure(e) =>
             logger.info("adding a new user was failed")
             localStorage -= userId
