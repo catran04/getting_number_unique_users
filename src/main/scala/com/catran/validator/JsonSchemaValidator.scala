@@ -9,8 +9,10 @@ class JsonSchemaValidator(val schemaResourceFile: String) {
 
   var schema: Schema = initSchema()
 
+  /**
+    * @return schema for validation json
+    */
   protected def initSchema(): Schema = {
-
     val source = scala.io.Source.fromURL(getClass.getResource(schemaResourceFile))
     try {
       val rawSchema = new JSONObject(new JSONTokener(source.mkString))
@@ -18,9 +20,12 @@ class JsonSchemaValidator(val schemaResourceFile: String) {
     } finally source.close()
   }
 
-  def validate(reportRequest: String): Unit = {
+  /**
+    * validates json by json-schema
+    */
+  def validate(json: String): Unit = {
     try {
-      val jsonObject = new JSONObject(reportRequest)
+      val jsonObject = new JSONObject(json)
       schema.validate(jsonObject)
     } catch {
       case e: ValidationException => {
