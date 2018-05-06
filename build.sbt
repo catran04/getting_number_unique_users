@@ -4,27 +4,24 @@ version := "1.0"
 
 scalaVersion := "2.12.6"
 
-// https://mvnrepository.com/artifact/com.typesafe.akka/akka-http
+// for creating rest server
 libraryDependencies += "com.typesafe.akka" %% "akka-http" % "10.1.1"
-
-// https://mvnrepository.com/artifact/com.typesafe.akka/akka-stream
 libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.5.11"
-
-// https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.5.11"
 
 
-// https://mvnrepository.com/artifact/joda-time/joda-time
+// for timing
 libraryDependencies += "joda-time" % "joda-time" % "2.9.9"
 
-// https://mvnrepository.com/artifact/log4j/log4j
+// for a logging
 libraryDependencies += "log4j" % "log4j" % "1.2.17"
 
-// https://mvnrepository.com/artifact/org.json4s/json4s-native
+// for a parsing jsons
 libraryDependencies += "org.json4s" %% "json4s-native" % "3.5.2"
-
-// https://mvnrepository.com/artifact/org.json4s/json4s-core
 libraryDependencies += "org.json4s" %% "json4s-core" % "3.5.2"
 
-// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+// for a connection to MySql server
 libraryDependencies += "mysql" % "mysql-connector-java" % "6.0.6"
+
+// https://mvnrepository.com/artifact/org.scalatest/scalatest
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
