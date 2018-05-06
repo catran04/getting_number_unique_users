@@ -4,10 +4,11 @@ package com.catran.options
   * using for application the different options
   */
 case class ApplicationOptions(
-                               storage: String = "mock",
+                               storage: String = "SqLite",
                                userTableName: String = "userTable",
                                rest: RestOptions = RestOptions(),
-                               mysql: MysqlOptions = MysqlOptions()
+                               mysql: MysqlOptions = MysqlOptions(),
+                               sqlite: SqLiteOptions = SqLiteOptions()
                              ) {
 }
 
@@ -47,12 +48,12 @@ object ApplicationOptions {
 case class RestOptions(
                         host: String = "localhost",
                         port: Int = 9080
-                      ){}
+                      )
 
 case class MysqlOptions(
-                         host: String = "localhost",
+                         host: String = "127.0.0.1",
                          port: Int = 3306,
-                         databaseName: String = "tinkoff",
+                         databaseName: String = "alibaba",
                          autoReconnect: Boolean = true,
                          useSSL: Boolean = false,
                          useJDBCCompliantTimezoneShift: Boolean = true,
@@ -61,4 +62,11 @@ case class MysqlOptions(
                          driver: String = "com.mysql.cj.jdbc.Driver",
                          username: String = "root",
                          password: String = "CrisBad33"
-                       ){}
+                       )
+
+case class SqLiteOptions(
+                          workingConnection: String = "jdbc:sqlite:userdb.db",
+                          testConnection: String = "jdbc:sqlite:testdb.db",
+                          driver: String = "org.sqlite.JDBC",
+                          databaseName: String = "testdb"
+                    )
