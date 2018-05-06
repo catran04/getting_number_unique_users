@@ -5,6 +5,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import akka.stream.ActorMaterializer
 import com.catran.options.{ApplicationContext, ApplicationOptions}
+import com.catran.util.DBUtil
 import org.apache.log4j.Logger
 import org.joda.time.DateTimeZone
 
@@ -23,7 +24,7 @@ class RestServer(applicationContext: ApplicationContext) {
   /**
     * creates the connection to database and launch REST server
     */
-  def launch(): Unit = {
+  def launch(testLaunch: Boolean): Unit = {
     DateTimeZone.setDefault(DateTimeZone.UTC)
     val options = applicationContext.options
 
@@ -36,37 +37,47 @@ class RestServer(applicationContext: ApplicationContext) {
     val port = options.rest.port
 
     val serverBinding: Future[ServerBinding] = Http().bindAndHandle(route.getRoute, host, port)
-    logger.info(s"REST server is now listening on http://$host:$port/...\nYou may shutdown server if will print something in console")
+    logger.info(s"REST server is now listening on http://$host:$port/...\nYou may shutdown server if will press enter in console")
 
-    StdIn.readLine() // let it run until user presses return
+    if(!testLaunch) {
+      StdIn.readLine() // let it run until user presses return
 
-    applicationContext.userDao.close //close the connection to database
+      applicationContext.userDao.close //close the connection to database
 
-    serverBinding
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when do
+      serverBinding
+        .flatMap(_.unbind()) // trigger unbinding from the port
+        .onComplete(_ => system.terminate()) // and shutdown when do
 
-    logger.info("REST server was shutdown")
+      logger.info("REST server was shutdown")
+    }
   }
+
 }
 
 object RestServer {
   private val logger = Logger.getLogger(getClass)
 
   def main(args: Array[String]): Unit = {
-    val applicationContext = initializeContext(args)
-    val app = new RestServer(applicationContext)
-    app.launch()
+    val applicationContext = initializeContext(args, testConnection = false)
+    new RestServer(applicationContext).launch(false)
   }
 
-  private def initializeContext(args: Array[String]): ApplicationContext = {
+  def testLaunch: Unit = {
+    val applicationContext = initializeContext(testConnection = true)
+    new RestServer(applicationContext).launch(true)
+  }
+
+  private def initializeContext(args: Array[String] = Array.empty, testConnection: Boolean): ApplicationContext = {
     logger.info(s"Parsing input arguments: '${args.mkString(" ")}'")
     val applicationOptions = ApplicationOptions(args)
     logger.info(s"options ${applicationOptions}")
 
+    val userDao = DBUtil(applicationOptions, testConnection = testConnection)
+    logger.info(s"using userDao: ${userDao.getClass}")
+
     ApplicationContext(
       options = applicationOptions,
-      userDao = ApplicationContext.getInFileMemoryUserDao//new MySqlUserDao(applicationOptions, MySqlConnector)
+      userDao = userDao
     )
   }
 }
