@@ -9,9 +9,7 @@ It's a simple application that returns the number of the unuque users which was 
   - you can custom options;
 
 ### Options by default
-- if options by default when using UserDaoInMemory.
-- Creating and store data into application.
-- length of data = 10000
+- if options by default when using SQLiteUserDao.
 - host of rest api - localhost
 - port of rest api - 9080
 
@@ -22,7 +20,8 @@ you should apply the options to argument of app in format
 #### supported options
 |   argument | definition        |       default           |
 | --- | ---|---|
-|`storage=<String>`| (mock or Mysql) where will be store of data.|  `mock`|
+|`storage=<String>`| what storage will be used. Allow `MySql` `SqLite` `SqLite`|  `mock`|
+|`userTableName=<String>` | the name of a table | `userTable ` |
 | `rest.host=<String>` | host of rest api.  | `localhost`|
 | `rest.port=<Integer>` | port of rest api.  |`9080`|
 | `rest.testPort=<Integer>` | port of rest api for integration tests.  |`9081`|
@@ -50,6 +49,11 @@ clone this repository
 ### Third step
 enter in a console command in source folder
 `sbt run` or `sbt "run <nameOption1>=<value> <nameOption2=<value>"` for applying custom options
+
+## Databases
+- By default the application uses `SqLite`.
+- You can also use `MySql` but you should run `MySql` server and create database. In running you should give custom option `mysql.databaseName=<String>` which equal the created database name.
+- You can also use `Memory` storage but it not recomended because this storage doesn't store the state. After relaunch all data will be lost
 
 ## Using REST API
 `REST API` supports three url
