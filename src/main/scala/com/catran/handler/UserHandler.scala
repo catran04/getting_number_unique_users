@@ -14,7 +14,9 @@ import scala.util.{Failure, Success, Try}
   */
 class UserHandler(userDao: UserDao) {
   private val logger = Logger.getLogger(getClass)
+
   private var localStorage = userDao.getAllUniqueUsers
+
   private val INTERNAL_ERROR_MESSAGE = "Wow you found a vulnerability in my code. And this means that I failed" +
   " the test task. It's very sad. I wanted to work for you"
   val NON_FIRST_VISIT_MESSAGE = ", how many times do you want to come here?"
@@ -59,17 +61,17 @@ class UserHandler(userDao: UserDao) {
     * @param request contains info about an user
     * @return response with a message about information of unique request
     */
-  def userHandle(request: String): Response = synchronized {
+  def userHandle(request: String): Response = synchronized{
     try {
       val userId = parse(request).user_id
       logger.info(s"handling request from a user: ${userId}")
       val numberUniqueUsers = localStorage.size
-      localStorage += userId
+      addUserToLocal(userId)
 
-      if (numberUniqueUsers == localStorage.size) {
+      if (numberUniqueUsers == localStorage.size) synchronized{
         logger.info(s"the user: ${userId} already was requested")
         Response(message = Some(userId + NON_FIRST_VISIT_MESSAGE))
-      } else {
+      } else synchronized{
         logger.info(s"adding a new user: ${userId} to a storage")
         Try(userDao.addUser(userId)) match {
           case Success(_) =>
@@ -101,6 +103,10 @@ class UserHandler(userDao: UserDao) {
     */
   private def parse(json: String): User = {
     User.fromJson(json)
+  }
+
+  private def addUserToLocal(userId: String): Unit = synchronized{
+    localStorage += userId
   }
 
   /**
