@@ -30,4 +30,15 @@ class MySqlUserDao(appOptions: ApplicationOptions, connector: SQLConnector) exte
       case e: Exception => throw new DaoException(e)
     }
   }
+
+  /**
+    * deletes all rows from a table
+    */
+  override def reset(): Unit = {
+    try{
+      statement.execute(s"DELETE FROM ${appOptions.userTableName};")
+    } catch {
+      case e: Exception => throw new DaoException(e)
+    }
+  }
 }

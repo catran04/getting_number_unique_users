@@ -49,17 +49,6 @@ abstract class AbstractSqlUserDao(appOptions: ApplicationOptions, connector: SQL
   }
 
   /**
-    * deletes all rows from a table
-    */
-  override def reset: Unit = {
-    try{
-      statement.execute(s"DELETE FROM ${appOptions.userTableName};")
-    } catch {
-      case e: Exception => throw new DaoException(e)
-    }
-  }
-
-  /**
     * closes the connection to a MySql server
     */
   override def close: Unit = {

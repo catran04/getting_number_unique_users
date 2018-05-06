@@ -3,3 +3,4 @@ target/
 *.db
 project/build.properties
 src/main/scala/com/catran/dao/user/Main.scala
+hs_err_pid6984.log

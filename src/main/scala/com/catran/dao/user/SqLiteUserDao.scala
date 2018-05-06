@@ -46,4 +46,15 @@ class SqLiteUserDao(appOptions: ApplicationOptions, connector: SQLConnector, tes
       case e: Exception => throw new DaoException(e)
     }
   }
+
+  /**
+    * deletes all rows from a table
+    */
+  override def reset(): Unit = {
+    try{
+      statement.execute(s"DELETE FROM ${appOptions.userTableName};")
+    } catch {
+      case e: Exception => throw new DaoException(e)
+    }
+  }
 }
