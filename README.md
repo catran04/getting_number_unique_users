@@ -20,7 +20,7 @@ you should apply the options to argument of app in format
 #### supported options
 |   argument | definition        |       default           |
 | --- | ---|---|
-|`storage=<String>`| what storage will be used. Allow `MySql` `SqLite` `SqLite`|  `mock`|
+|`storage=<String>`| what storage will be used. Allow `MySql` `SqLite` `Memory`|  `SqLite`|
 |`userTableName=<String>` | the name of a table | `userTable ` |
 | `rest.host=<String>` | host of rest api.  | `localhost`|
 | `rest.port=<Integer>` | port of rest api.  |`9080`|
@@ -39,7 +39,6 @@ you should apply the options to argument of app in format
 |`sqlite.workingConnection=<String>` | uses as argument for DriverManager. | `jdbc:sqlite:userdb.db` |
 |`sqlite.testConnection=<String>` | users as argument for DriverManager for running integration tests | `jdbc:sqlite:testdb.db` |
 | `sqlite.driver`| path to sqlite driver | `org.sqlite.JDBC` |
-|
 
 ## Launch using sbt
 ### First step
