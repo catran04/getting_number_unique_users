@@ -26,33 +26,37 @@ class UserHandler(userDao: UserDao) {
     * updates the counter of unique users to 0
     * @return response with message about success updating if handling of request was success
     */
-  def reset: Response = try{
-    userDao.reset
-    localStorage = mutable.HashSet[String]()
-    logger.info("updating the counter of unique users to 0")
-    Response(message = Some("counter is 0"))
-  } catch {
-    case e: DaoException =>
-      logger.error(e.getMessage,e)
-      respondFailure(StatusCodes.InternalServerError.intValue, StatusCodes.InternalServerError.defaultMessage)
-    case e: Exception =>
-      logger.error(e.getMessage, e)
-      respondFailure(StatusCodes.InternalServerError.intValue, INTERNAL_ERROR_MESSAGE)
+  def reset: Response = synchronized{
+    try{
+      userDao.reset()
+      localStorage = mutable.HashSet[String]()
+      logger.info("updating the counter of unique users to 0")
+      Response(message = Some("counter is 0"))
+    } catch {
+      case e: DaoException =>
+        logger.error(e.getMessage,e)
+        respondFailure(StatusCodes.InternalServerError.intValue, StatusCodes.InternalServerError.defaultMessage)
+      case e: Exception =>
+        logger.error(e.getMessage, e)
+        respondFailure(StatusCodes.InternalServerError.intValue, INTERNAL_ERROR_MESSAGE)
+    }
   }
 
   /**
     * @return the number of unique users
     */
-  def getUniqueNumberUser: Response = try{
-    logger.info(s"getting the unique number of the users: ${localStorage.size}")
-    Response(number_unique_users = Some(localStorage.size))
-  } catch {
-    case e: DaoException =>
-      logger.error(e.getMessage,e)
-      respondFailure(StatusCodes.InternalServerError.intValue, StatusCodes.InternalServerError.defaultMessage)
-    case e: Exception =>
-      logger.error(e.getMessage, e)
-      respondFailure(StatusCodes.InternalServerError.intValue, INTERNAL_ERROR_MESSAGE)
+  def getUniqueNumberUser: Response = synchronized {
+    try{
+      logger.info(s"getting the unique number of the users: ${localStorage.size}")
+      Response(number_unique_users = Some(localStorage.size))
+    } catch {
+      case e: DaoException =>
+        logger.error(e.getMessage,e)
+        respondFailure(StatusCodes.InternalServerError.intValue, StatusCodes.InternalServerError.defaultMessage)
+      case e: Exception =>
+        logger.error(e.getMessage, e)
+        respondFailure(StatusCodes.InternalServerError.intValue, INTERNAL_ERROR_MESSAGE)
+    }
   }
 
   /**
