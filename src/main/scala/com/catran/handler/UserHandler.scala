@@ -72,10 +72,10 @@ class UserHandler(userDao: UserDao) {
       val numberUniqueUsers = localStorage.size
       addUserToLocal(userId)
 
-      if (numberUniqueUsers == localStorage.size) synchronized{
+      if (numberUniqueUsers == localStorage.size) {
         logger.info(s"the user: ${userId} already was requested")
         Response(message = Some(userId + NON_FIRST_VISIT_MESSAGE))
-      } else synchronized{
+      } else {
         logger.info(s"adding a new user: ${userId} to a storage")
         Try(userDao.addUser(userId)) match {
           case Success(_) =>

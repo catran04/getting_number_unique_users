@@ -18,8 +18,8 @@ class RestRoute(appContext: ApplicationContext) extends Directives {
   /**
     * the routing of the user requests
     */
-  def getRoute: server.Route = synchronized{
-      path("user") synchronized{
+  def getRoute: server.Route = {
+      path("user") {
         post {
           entity(as[String]) { request =>
             val response = userHandler.userHandle(request)
