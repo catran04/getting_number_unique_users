@@ -18,27 +18,27 @@ you should apply the options to argument of app in format
 `<nameOption1>=<value> <nameOption2=<value>`
 
 #### supported options
-|   argument | definition        |       default           |
-| --- | ---|---|
-|`storage=<String>`| what storage will be used. Allow `MySql` `SqLite` `Memory`|  `SqLite`|
-|`userTableName=<String>` | the name of a table | `userTable ` |
-| `rest.host=<String>` | host of rest api.  | `localhost`|
-| `rest.port=<Integer>` | port of rest api.  |`9080`|
-| `rest.testPort=<Integer>` | port of rest api for integration tests.  |`9081`|
-| `mysql.host=<String>` | host of mysql server.  | `localhost`|
-| `mysql.port=<Integer>` | port of mysql server. | `3306`|
-| `mysql.databaseName=<String>` | the name of database. You should use existing database.  | `userdb`|
-| `mysql.autoReconnect=<Boolean>` | autoreconnect |   `true`|
-| `mysql.useSSL=<Boolean>`  || `false`|
-| `mysql.useJDBCCompliantTimezoneShift=<Boolean>`  || `true`|
-| `mysql.useLegacyDatetimeCode=<Boolean>`  || `false`|
-| `mysql.serverTimezone=<String>`  || `UTC`|
-| `mysql.driver=<String>`  || `com.mysql.cj.jdbc.Driver`|
-| `mysql.username=<String>` | username for connect to Mysql server.|  - `root`|
-|`mysql.password=<String>`| password for connect to Mysql server. | `root`|
-|`sqlite.workingConnection=<String>` | uses as argument for DriverManager. | `jdbc:sqlite:userdb.db` |
-|`sqlite.testConnection=<String>` | users as argument for DriverManager for running integration tests | `jdbc:sqlite:testdb.db` |
-| `sqlite.driver`| path to sqlite driver | `org.sqlite.JDBC` |
+|   argument                                      | definition                                                        | default      |
+| ---                                             | ---                                                               |---           |
+|`storage=<String>`                               | what storage will be used. Allow `MySql` `SqLite` `Memory`        |  `SqLite`    |
+|`userTableName=<String>`                         | the name of a table                                               | `userTable ` |
+| `rest.host=<String>`                            | host of rest api.                                                 | `localhost`  |
+| `rest.port=<Integer>`                           | port of rest api.                                                 |`9080`        |
+| `rest.testPort=<Integer>`                       | port of rest api for integration tests.                           |`9081`        |
+| `mysql.host=<String>`                           | host of mysql server.                                             | `localhost`  |
+| `mysql.port=<Integer>`                          | port of mysql server.                                             | `3306`       |
+| `mysql.databaseName=<String>`                   | the name of database. You should use existing database.           | `userdb`     |
+| `mysql.autoReconnect=<Boolean>`                 | autoreconnect                                                     |   `true`     |
+| `mysql.useSSL=<Boolean>`                        |                                                                   | `false`      |
+| `mysql.useJDBCCompliantTimezoneShift=<Boolean>` |                                                                   | `true`       |
+| `mysql.useLegacyDatetimeCode=<Boolean>`         |                                                                   | `false`      |
+| `mysql.serverTimezone=<String>`                 |                                                                   | `UTC`        |
+| `mysql.driver=<String>`                         |                                                                   | `com.mysql.cj.jdbc.Driver`|
+| `mysql.username=<String>`                       | username for connect to Mysql server.                             |  `root`      |
+|`mysql.password=<String>`                        | password for connect to Mysql server.                             | `password`   |
+|`sqlite.workingConnection=<String>`              | uses as argument for DriverManager.                               | `jdbc:sqlite:userdb.db` |
+|`sqlite.testConnection=<String>`                 | users as argument for DriverManager for running integration tests | `jdbc:sqlite:testdb.db` |
+| `sqlite.driver`                                 | path to sqlite driver                                             | `org.sqlite.JDBC` |
 
 ## Launch using sbt
 ### First step
